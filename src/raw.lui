@@ -1,0 +1,4 @@
+fib = func(numb)
+    print("the number you enter")
+
+fib(5)
