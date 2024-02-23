@@ -1,4 +1,4 @@
-//@ts-nocheck
+//TODO:: this code should be typed
 export function evaluator(expression, env) {
   switch (expression.type) {
     case 'num':

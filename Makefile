@@ -2,7 +2,7 @@ build:
 	tsc
 run:
 	tsc
-	node ./ugf/$(main).js
+	node ./luigi/$(main).js
 
 
 dummy:

@@ -1,4 +1,4 @@
 fib = func(numb)
-    print("the number you enter")
+    print("the number\" you enter")
 
-fib(5)
+fib(565)

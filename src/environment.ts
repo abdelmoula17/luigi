@@ -1,8 +1,7 @@
-//@ts-nocheck
 export class Env {
   vars;
   parent;
-  constructor(parent: { vars: { [key: string]: any } }) {
+  constructor(parent?: { vars: { [key: string]: any } }) {
     this.vars = Object.create(parent ? parent.vars : null);
     this.parent = parent;
   }
@@ -11,7 +10,7 @@ export class Env {
   }
 
   lookup(name: string) {
-    var scope = this;
+    var scope: any = this;
     while (scope) {
       if (Object.prototype.hasOwnProperty.call(scope.vars, name)) return scope;
       scope = scope.parent;
@@ -29,7 +28,7 @@ export class Env {
     return ((scope || this).vars[name] = value);
   }
 
-  def(name: string, value: string) {
+  def(name: string, value: any) {
     return (this.vars[name] = value);
   }
 }

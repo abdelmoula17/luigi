@@ -83,7 +83,7 @@ export function TokenStream(input: TInputStream): TTokenStream {
     return is_id_start(char) || '?!-<>=0123456789'.indexOf(char) >= 0;
   }
 
-  //TODO::  should be in a separate component
+  //TODO::  should be in a separate class
   /** READERS */
   function read_while(predicate: (char: string) => boolean) {
     let str: string = '';
@@ -96,6 +96,7 @@ export function TokenStream(input: TInputStream): TTokenStream {
       value: espc_str(),
     };
   }
+
   function read_number() {
     var is_decimal = false;
     let number = read_while((char) => {
