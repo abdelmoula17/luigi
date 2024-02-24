@@ -109,9 +109,12 @@ export function Parser(input: TTokenStream) {
 
   function parse_for_loop() {
     skip_kw('for');
+    var args = delimited('(', ')', ';', parse_expression);
     var parsed = {
       type: 'for',
-      args: delimited('(', ')', ';', parse_expression),
+      initialisation: args[0],
+      cond: args[1],
+      iteration: args[2],
       body: parse_expression(),
     };
     return parsed;
@@ -133,7 +136,7 @@ export function Parser(input: TTokenStream) {
     };
     if (is_ternary_op(':')) {
       input.next();
-      parsed.else = parse_cond;
+      parsed.else = parse_expression();
     }
     return parsed;
   }
