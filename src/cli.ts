@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { Command } from 'commander';
 import { InputStream } from './inputStream';
 import { TokenStream } from './tokenStream';
@@ -45,9 +47,11 @@ if (options.compile) {
   const code = read_file(program.args[0]);
   var ast = Parser(TokenStream(InputStream(code.toString())));
   var globalEnv = new Env();
-  globalEnv.def('print', function (txt: string) {
-    console.log(txt);
+
+  globalEnv.def('print', function (something: any) {
+    console.log(something);
   });
+
   try {
     evaluator(ast, globalEnv);
   } catch (err) {
