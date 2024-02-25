@@ -75,6 +75,14 @@ export function Parser(input: TTokenStream) {
     else input.panic('Excepcting operator: ( ' + op + ' )');
   }
 
+  /**
+   * the delimited function used to handle functions or for(loop) arguments
+   * @param start
+   * @param stop
+   * @param separator
+   * @param parser
+   * @returns
+   */
   function delimited(
     start: string,
     stop: string,
@@ -94,6 +102,16 @@ export function Parser(input: TTokenStream) {
     skip_punc(stop);
     return a;
   }
+  function maybe_call(expr: any) {
+    expr = expr();
+    return is_punc('(') ? parse_func_call(expr) : expr;
+  }
+
+  /**
+   * parse a function call
+   * @param func
+   * @returns
+   */
   function parse_func_call(func: any) {
     return {
       type: 'func_call',
@@ -102,11 +120,10 @@ export function Parser(input: TTokenStream) {
     };
   }
 
-  function maybe_call(expr: any) {
-    expr = expr();
-    return is_punc('(') ? parse_func_call(expr) : expr;
-  }
-
+  /**
+   * parse for loop
+   * @returns
+   */
   function parse_for_loop() {
     skip_kw('for');
     var args = delimited('(', ')', ';', parse_expression);
@@ -119,6 +136,11 @@ export function Parser(input: TTokenStream) {
     };
     return parsed;
   }
+
+  /**
+   * parse conditions
+   * @returns
+   */
   function parse_cond() {
     skip_kw('if');
     var condtition = parse_expression();
@@ -140,12 +162,22 @@ export function Parser(input: TTokenStream) {
     }
     return parsed;
   }
+
+  /**
+   * parse booleans
+   * @returns
+   */
   function parse_bool() {
     return {
       type: 'bool',
       value: input?.next()?.value == 'true',
     };
   }
+
+  /**
+   * parse the program, this is the entry point
+   * @returns
+   */
   function parse_prog() {
     var block = delimited('{', '}', ';', parse_expression);
     if (block.length === 0) return false;
@@ -155,11 +187,21 @@ export function Parser(input: TTokenStream) {
       value: block,
     };
   }
+
+  /**
+   * parse variables names
+   * @returns
+   */
   function parse_varname() {
     var name = input.next();
     if (name?.type != 'var') input.panic('Expecting variable name');
     return name?.value;
   }
+
+  /**
+   * parse functions
+   * @returns
+   */
   function parse_func() {
     return {
       type: 'func',

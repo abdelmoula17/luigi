@@ -60,11 +60,12 @@ const handle_for_loop = (expression: TForLoopNode, env: Env) => {
     evaluator(expression.body, scope);
   }
 };
+
 const handle_func = (expression: TFunctionNode, env: Env) => {
   function func() {
     var var_names = expression.vars;
     var scope = env.extend();
-    for (let i = 0; i < var_names.length; i++) {
+    for (var i = 0; i < var_names.length; ++i) {
       scope.def(var_names[i], i < arguments.length ? arguments[i] : false);
     }
     return evaluator(expression.body, scope);

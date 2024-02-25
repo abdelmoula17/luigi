@@ -11,7 +11,7 @@ export class Env {
    * @returns Env
    */
   extend() {
-    return this;
+    return new Env(this);
   }
 
   /**
